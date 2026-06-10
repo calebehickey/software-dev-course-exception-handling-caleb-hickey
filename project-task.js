@@ -32,20 +32,35 @@ const readlineSync = require('readline-sync');
 // Initial Code with Bugs (modified to use readline-sync)
 let animals = [];
 let fees = [];
+
 function addAnimal(name, fee) {
-    if (!name || fee < 0) {
-        throw new Error("Invalid animal name or adoption fee!");
+    try {
+    if (name === "" || name === null || name === undefined) {
+        throw new Error("Name cannot be blank");
     }
-    animals.push(name);
-    fees.push(fee);
+    if (fee <= 0) {
+        throw new Error("Fee must be greater than zero");
+    }
+    else 
+        console.log(`${name} has been added for $${fee}.`)
+    }
+    catch (err){
+        console.log(err.message)
+    }
 }
+
+
 function getAdoptionFee(animalName) {
     let index = animals.indexOf(animalName);
-    if (index === -1) {
-        throw new Error("Animal not found in records!");
+    try {
+        if (index === -1) {
+            throw new Error("Animal not found in records!");
+        }}
+    catch (err){
+        console.log(err.message)
     }
-    return fees[index];
 }
+
 // Main program
 console.log("Welcome to the Pet Shelter System");
 while (true) {
@@ -58,7 +73,6 @@ while (true) {
         let animal = readlineSync.question("Enter the animal's name: ");
         let fee = Number(readlineSync.question("Enter the adoption fee: "));
         addAnimal(animal, fee);
-        console.log(`${animal} added with a fee of $${fee}.`);
     } else if (action === "fee") {
         let animal = readlineSync.question("Enter the animal's name to find its adoption fee: ");
         console.log(`${animal}'s adoption fee is $${getAdoptionFee(animal)}.`);
